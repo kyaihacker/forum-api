@@ -18,13 +18,13 @@ class DeleteReplyUseCase {
     }
 
     _validatePayload(payload) {
-        const { threadId, commentId, replyId } = payload;
+        const { threadId, commentId, replyId, ownerId } = payload;
 
-        if (!threadId || !commentId || !replyId) {
+        if (!threadId || !commentId || !replyId || !ownerId) {
             throw new Error('DELETE_REPLY_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 
-        if (typeof threadId !== 'string' || typeof commentId !== 'string' || typeof replyId !== 'string') {
+        if (typeof threadId !== 'string' || typeof commentId !== 'string' || typeof replyId !== 'string' || typeof ownerId !== 'string') {
             throw new Error('DELETE_REPLY_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
     }

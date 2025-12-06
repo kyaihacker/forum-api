@@ -21,7 +21,7 @@ describe('DeleteReplyUseCase', () => {
             threadId: 123,
             commentId: 123,
             replyId: 123,
-            owner: 'user-123',
+            ownerId: 'user-123',
         };
 
         const deleteReplyUseCase = new DeleteReplyUseCase({});

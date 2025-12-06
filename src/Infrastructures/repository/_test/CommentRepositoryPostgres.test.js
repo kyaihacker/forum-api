@@ -76,15 +76,13 @@ describe('CommentRepositoryPostgres', () => {
             const comments = await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
 
             // Assert
-            expect(comments).toStrictEqual([
-                new DetailComment({
-                    id: 'comment-123',
-                    username: 'dicoding',
-                    date: new Date().toISOString(),
-                    content: 'isi comment',
-                    is_deleted: false,
-                }),
-            ]);
+            expect(comments).toHaveLength(1);
+            expect(comments[0]).toBeInstanceOf(DetailComment);
+            expect(comments[0].id).toEqual('comment-123');
+            expect(comments[0].username).toEqual('dicoding');
+            expect(comments[0].content).toEqual('isi comment');
+            expect(typeof comments[0].date).toBe('string');
+            expect(comments[0].is_deleted).toEqual(false);
         });
     });
 

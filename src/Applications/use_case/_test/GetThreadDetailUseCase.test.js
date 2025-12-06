@@ -42,19 +42,18 @@ describe('GetThreadDetailUseCase', () => {
             id: useCasePayload.id,
             title: 'sebuah thread',
             body: 'sebuah body thread',
-            username: 'dicoding',
             date,
+            username: 'dicoding',
         }));
 
         mockCommentRepository.getCommentsByThreadId = jest.fn()
             .mockImplementation(() => Promise.resolve([{
                 id: 'comment-123',
                 username: 'dicoding',
-                content: 'isi comment',
                 date,
         }]));
 
-        mockReplyRepository.getRepliesByCommentIds = jest.fn()
+        mockReplyRepository.getRepliesByThreadId = jest.fn()
             .mockImplementation(() => Promise.resolve([{
                 id: 'reply-123',
                 content: 'sebuah balasan',
@@ -70,12 +69,12 @@ describe('GetThreadDetailUseCase', () => {
         });
 
         // Action
-        const thread = getThreadDetailUseCase.execute(useCasePayload);
+        const thread = await getThreadDetailUseCase.execute(useCasePayload);
 
         // Assert
         expect(thread).toEqual(threadDetail);
         expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload.id);
         expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(useCasePayload.id);
-        expect(mockReplyRepository.getRepliesByCommentIds).toBeCalledWith(useCasePayload.id);
+        expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(useCasePayload.id);
     });
 });

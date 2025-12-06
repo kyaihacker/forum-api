@@ -19,7 +19,7 @@ describe('DeleteCommentUseCase', () => {
         const useCasePayload = {
             threadId: 123,
             commentId: 123,
-            owner: 'user-123',
+            ownerId: 'user-123',
         };
 
         const deleteCommentUseCase = new DeleteCommentUseCase({});
@@ -35,7 +35,7 @@ describe('DeleteCommentUseCase', () => {
         const useCasePayload = {
             threadId: 'thread-123',
             commentId: 'comment-123',
-            owner: 'user-123',
+            ownerId: 'user-123',
         };
 
         const mockCommentRepository = new CommentRepository();
@@ -61,7 +61,7 @@ describe('DeleteCommentUseCase', () => {
         // Assert
         expect(mockThreadRepository.verifyThreadExists).toBeCalledWith(useCasePayload.threadId);
         expect(mockCommentRepository.verifyCommentExists).toBeCalledWith(useCasePayload.commentId);
-        expect(mockCommentRepository.verifyCommentOwner).toBeCalledWith(useCasePayload.commentId, useCasePayload.owner);
+        expect(mockCommentRepository.verifyCommentOwner).toBeCalledWith(useCasePayload.commentId, useCasePayload.ownerId);
         expect(mockCommentRepository.deleteComment).toBeCalledWith(useCasePayload.commentId);
     });
 });

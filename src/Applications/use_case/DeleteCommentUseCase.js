@@ -16,13 +16,13 @@ class DeleteCommentUseCase {
     }
 
     _validatePayload(payload) {
-        const { threadId, commentId } = payload;
+        const { threadId, commentId, ownerId } = payload;
 
-        if (!threadId || !commentId) {
+        if (!threadId || !commentId || !ownerId) {
             throw new Error('DELETE_COMMENT_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY');
         }
 
-        if (typeof threadId !== 'string' || typeof commentId !== 'string') {
+        if (typeof threadId !== 'string' || typeof commentId !== 'string' || typeof ownerId !== 'string') {
             throw new Error('DELETE_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
     }

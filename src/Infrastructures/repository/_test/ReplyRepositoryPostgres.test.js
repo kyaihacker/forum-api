@@ -79,16 +79,14 @@ describe('ReplyRepositoryPostgres', () => {
             const replies = await replyRepositoryPostgres.getRepliesByThreadId('thread-123');
 
             // Assert
-            expect(replies).toStrictEqual([
-                new DetailReply({
-                    id: 'reply-123',
-                    content: 'sebuah balasan',
-                    date: new Date().toISOString(),
-                    username: 'dicoding',
-                    comment_id: 'comment-123',
-                    is_deleted: false,
-                }),
-            ]);
+            expect(replies).toHaveLength(1);
+            expect(replies[0]).toBeInstanceOf(DetailReply);
+            expect(replies[0].id).toEqual('reply-123');
+            expect(replies[0].content).toEqual('sebuah balasan');
+            expect(replies[0].username).toEqual('dicoding');
+            expect(replies[0].comment_id).toEqual('comment-123');
+            expect(typeof replies[0].date).toBe('string');
+            expect(replies[0].is_deleted).toEqual(false);
         });
     });
 

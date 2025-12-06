@@ -7,9 +7,10 @@ class GetThreadDetailUseCase {
 
     async execute(useCasePayload) {
         const { id } = useCasePayload;
+        await this._threadRepository.verifyThreadExists(id);
         const thread = await this._threadRepository.getThreadById(id);
         const comments = await this._commentRepository.getCommentsByThreadId(id);
-        const replies = await this._replyRepository.getRepliesByCommentIds(id);
+        const replies = await this._replyRepository.getRepliesByThreadId(id);
 
         thread.comments = comments.map((comment) => {
             const newComment = { ...comment };

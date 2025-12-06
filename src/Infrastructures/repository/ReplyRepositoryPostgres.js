@@ -29,7 +29,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
         const query = {
             text: `
                 SELECT
-                r.id, r.content, r.date, r.owner, r.comment_id, r.is_deleted
+                r.id, r.content, r.date, u.username, r.comment_id, r.is_deleted
                 FROM replies r
                 INNER JOIN users u ON u.id = r.owner
                 INNER JOIN comments c ON c.id = r.comment_id
@@ -40,7 +40,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
         };
 
         const result = await this._pool.query(query);
-        return result.rows.map((reply) => new DetailReply(reply));
+        return DetailReply.fromArray(result.rows);
     }
 
     async verifyReplyExists(replyId) {

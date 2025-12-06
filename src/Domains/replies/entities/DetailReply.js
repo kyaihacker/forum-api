@@ -21,6 +21,13 @@ class DetailReply {
             throw new Error('DETAIL_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION');
         }
     }
+
+    static fromArray(payloads) {
+        if (!Array.isArray(payloads)) {
+            throw new Error('DETAIL_REPLY.FROM_ARRAY_PAYLOAD_MUST_BE_ARRAY');
+        }
+        return payloads.map((payload) => new DetailReply(payload));
+    }
 }
 
 module.exports = DetailReply;
