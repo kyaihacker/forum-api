@@ -5,6 +5,7 @@ class DetailReply {
         const { id, content, date, username, comment_id, is_deleted } = payload;
         this.id = id;
         this.content = is_deleted ? '**balasan telah dihapus**' : content;
+        this.is_deleted = is_deleted;
         this.date = date;
         this.username = username;
         this.comment_id = comment_id;
