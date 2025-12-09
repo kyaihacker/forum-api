@@ -1,3 +1,4 @@
+const NewThread = require('../../../Domains/threads/entities/NewThread');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const AddTreadUseCase = require('../../../Applications/use_case/AddThreadUseCase');
@@ -33,7 +34,7 @@ describe('AddThreadUseCase', () => {
             title: 'different title',
             owner: 'different-owner',
         }));
-        expect(mockThreadRepository.addThread).toBeCalledWith(new AddedThread({
+        expect(mockThreadRepository.addThread).toBeCalledWith(new NewThread({
             title: useCasePayload.title,
             body: useCasePayload.body,
             owner: useCasePayload.owner,
