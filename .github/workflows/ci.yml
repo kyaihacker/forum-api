@@ -3,11 +3,11 @@
     on: 
       pull_request:
         branches:
-          - master
+          - main
      
     jobs:
       test:
-        runs-on: almalinux-9
+        runs-on: ubuntu-latest
      
         strategy:
           matrix:
