@@ -81,6 +81,9 @@ describe('CommentLikeRepositoryPostgres', () => {
         describe('removeLike function', () => {
             it('should call pool.query with correct query and values to delete a like', async () => {
                 // Arrange
+                const commentId = 'comment-xyz'; 
+                const owner = 'user-123';
+
                 mockPool = {
                     query: jest.fn(),
                 };
@@ -103,35 +106,42 @@ describe('CommentLikeRepositoryPostgres', () => {
         describe('getLikeCountByThreadId function', () => {
             it('should return like counts aggregated by comment id', async () => {
                 // Arrange
-                const expectedRows = [
-                    { comment_id: 'comment-A', count: 5 },
-                    { comment_id: 'comment-B', count: 2 },
-                ];
-                mockPool.query.mockResolvedValue({
-                    rows: expectedRows,
-                });
-                mockIdGenerator = jest.fn(() => '12345');
+                const threadId = 'thread-123';
 
-                const expectedQueryText = `
-                    SELECT 
-                        comment_likes.comment_id, COUNT(comment_likes.comment_id)::integer AS count
-                    FROM comment_likes
-                    JOIN comments ON comment_likes.comment_id = comments.id
-                    WHERE comments.thread_id = $1
-                    GROUP BY comment_likes.comment_id
-                `;
+                const expectedResult = [
+                    { comment_id: 'comment-123', count: 5 },
+                    { comment_id: 'comment-234', count: 13 },
+                ];
+
+                const mockPool = {
+                    query: jest.fn(),
+                };
+
+                mockPool.query.mockResolvedValue({
+                    rows: expectedResult,
+                });
 
                 // Action
-                const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(mockPool, mockIdGenerator);
-                const likeCounts = await commentLikeRepositoryPostgres.getLikeCountByThreadId('thread-789');
+                const commentLikeRepository = new CommentLikeRepositoryPostgres(mockPool);
+                const likeCounts = await commentLikeRepository.getLikeCountByThreadId(threadId);
 
                 // Assert
                 expect(mockPool.query).toHaveBeenCalledTimes(1);
-                expect(mockPool.query).toHaveBeenCalledWith({
-                    text: expectedQueryText,
+                const expectedQuery = {
+                    text: `
+                        SELECT
+                            comment_likes.comment_id, COUNT(comment_likes.comment_id)::integer AS count
+                        FROM comment_likes
+                        JOIN comments ON comment_likes.comment_id = comments.id
+                        WHERE comments.thread_id = $1
+                        GROUP BY comment_likes.comment_id
+                    `,
                     values: [threadId],
-                });
-                expect(likeCounts).toEqual(expectedRows);
+                };
+                const cleanQueryText = (text) => text.replace(/\s+/g, ' ').trim();
+                expect(cleanQueryText(mockPool.query.mock.calls[0][0].text)).toEqual(cleanQueryText(expectedQuery.text));
+                expect(mockPool.query.mock.calls[0][0].values).toEqual(expectedQuery.values);
+                expect(likeCounts).toEqual(expectedResult);
             });
         });
     });

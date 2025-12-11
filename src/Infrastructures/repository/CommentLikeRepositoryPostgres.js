@@ -13,8 +13,8 @@ class CommentLikeRepositoryPostgres extends CommentLikeRepository {
             values: [commentId, owner],
         };
 
-        const result = await this._pool.query(query);
-        return result.rowCount > 0;
+        const { rowCount } = await this._pool.query(query);
+        return rowCount;
     }
 
     async addLike(commentId, owner) {
