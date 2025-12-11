@@ -8,15 +8,13 @@ class CommentLikeHandler {
     }
 
     async putCommentLikeHandler(request, h) {
+        const { threadId, commentId } = request.params;
+        const { id: owner } = request.auth.credentials;
         const toggleCommentLikeUseCase = this._container.getInstance(ToggleCommentLikeUseCase.name);
 
-        const useCasePayload = {
-            threadId: request.params.threadId,
-            commentId: request.params.commentId,
-            owner: request.auth.credentials.id,
-        };
-
-        await toggleCommentLikeUseCase.execute(useCasePayload);
+        await toggleCommentLikeUseCase.execute({
+            threadId, commentId, owner,    
+        });
 
         return {
             status: 'success',
