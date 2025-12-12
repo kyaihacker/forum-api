@@ -252,10 +252,8 @@ container.register([
           internal: CommentRepository.name,
         },
         {
-          // name: 'replyRepository',
-          //internal: ReplyRepository.name,
-          name: 'commentLikeRepository',
-          internal: CommentLikeRepository.name,
+          name: 'replyRepository',
+          internal: ReplyRepository.name,
         },
       ],
     },
@@ -351,7 +349,7 @@ container.register([
           internal: ThreadRepository.name,
         },
         {
-          name: 'CommentLikeRepository',
+          name: 'commentLikeRepository',
           internal: CommentLikeRepository.name,
         },
       ],

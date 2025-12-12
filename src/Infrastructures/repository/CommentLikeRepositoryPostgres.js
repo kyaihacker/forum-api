@@ -14,7 +14,7 @@ class CommentLikeRepositoryPostgres extends CommentLikeRepository {
         };
 
         const { rowCount } = await this._pool.query(query);
-        return rowCount;
+        return rowCount > 0;
     }
 
     async addLike(commentId, owner) {
@@ -22,7 +22,7 @@ class CommentLikeRepositoryPostgres extends CommentLikeRepository {
         const date = new Date().toISOString();
 
         const query = {
-            text: 'INSERT INTO comment_likes (id, comment_id, owner, date) VALUES($1, $2, $3, $4',
+            text: 'INSERT INTO comment_likes (id, comment_id, owner, date) VALUES($1, $2, $3, $4)',
             values: [id, commentId, owner, date],
         };
 

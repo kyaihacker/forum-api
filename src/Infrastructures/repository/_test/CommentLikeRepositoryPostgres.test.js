@@ -8,7 +8,8 @@ const CommentLikeRepositoryPostgres = require('../CommentLikeRepositoryPostgres'
 
 describe('CommentLikeRepositoryPostgres', () => {
     it('should be instance of CommentLikeRepository', () => {
-        const commentLikeRepositoryPostgres = new CommentLikeRepository();
+        const fakeIdGenerator = () => '123';
+        const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres({}, fakeIdGenerator);
 
         expect(commentLikeRepositoryPostgres).toBeInstanceOf(CommentLikeRepository);
     });
@@ -34,15 +35,12 @@ describe('CommentLikeRepositoryPostgres', () => {
         describe('checkLikeStatus function', () => {
             it('should return true when like exists', async () => {
                 // Arrange
-                const payload = {
-                    commentId: 'comment-123',
-                    owner: 'user-123',
-                };
                 await LikesTableTestHelper.addLike({ id: 'like-123', commentId: 'comment-123', owner: 'user-123' });
-                const commentLikeRepositoryPostgres = new CommentLikeRepository(pool, {});
+                const fakeIdGenerator = () => '123';
+                const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(pool, fakeIdGenerator);
 
                 // Action
-                const isLiked = await commentLikeRepositoryPostgres.checkLikeStatus(payload);
+                const isLiked = await commentLikeRepositoryPostgres.checkLikeStatus('comment-123', 'user-123');
 
                 // Assert
                 expect(isLiked).toBe(true);
@@ -50,10 +48,11 @@ describe('CommentLikeRepositoryPostgres', () => {
 
             it('should return false when like does not exist', async () => {
                 // Arrange
-                const commentLikeRepositoryPostgres = new CommentLikeRepository(pool, {});
+                const fakeIdGenerator = () => '123';
+                const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(pool, fakeIdGenerator);
 
                 // Action
-                const isLiked = await commentLikeRepositoryPostgres.checkLikeStatus({ commentId: 'comment-123', owner: 'user' });
+                const isLiked = await commentLikeRepositoryPostgres.checkLikeStatus('comment-123', 'user-456');
 
                 // Assert
                 expect(isLiked).toBe(false);
@@ -63,15 +62,12 @@ describe('CommentLikeRepositoryPostgres', () => {
         describe('addLike function', () => {
             it('should add like to comment', async () => {
                 // Arrange
-                const payload = {
-                    commentId: 'comment-123',
-                    owner: 'user-123',
-                };
                 const fakeIdGenerator = () => '123';
-                const commentLikeRepositoryPostgres = new CommentLikeRepository(pool, fakeIdGenerator);
+                const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(pool, fakeIdGenerator);
 
                 // Action
-                const isLiked = await commentLikeRepositoryPostgres.addLike(payload);
+                await commentLikeRepositoryPostgres.addLike('comment-123', 'user-123');
+                const isLiked = await commentLikeRepositoryPostgres.checkLikeStatus('comment-123', 'user-123');
 
                 // Assert
                 expect(isLiked).toBe(true);
@@ -122,7 +118,8 @@ describe('CommentLikeRepositoryPostgres', () => {
                 });
 
                 // Action
-                const commentLikeRepository = new CommentLikeRepositoryPostgres(mockPool);
+                const fakeIdGenerator = () => '123';
+                const commentLikeRepository = new CommentLikeRepositoryPostgres(mockPool, fakeIdGenerator);
                 const likeCounts = await commentLikeRepository.getLikeCountByThreadId(threadId);
 
                 // Assert
