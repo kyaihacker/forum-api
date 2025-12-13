@@ -7,8 +7,6 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 const LikesTableTestHelper = require('../../../../tests/LikesTableTestHelper');
-const { Server } = require('@hapi/hapi');
-const { headless } = require('@hapi/jwt/lib/token');
 
 describe('/threads endpoint', () => {
     beforeEach(async () => {
@@ -136,7 +134,7 @@ describe('/threads endpoint', () => {
             // Arrange
             await LikesTableTestHelper.addLike({ commentId: 'comment-123', owner: 'user-123' });
             await LikesTableTestHelper.addLike({ commentId: 'comment-123', owner: 'user-456', id: 'like-456' });
-            await UsersTableTestHelper.addUser({ id: 'user-456', username: 'user-456' });
+            await UsersTableTestHelper.addUser({ id: 'user-456', username: 'user456' });
             const server = await createServer(container);
 
             // Action

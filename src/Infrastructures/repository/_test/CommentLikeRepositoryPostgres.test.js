@@ -67,9 +67,9 @@ describe('CommentLikeRepositoryPostgres', () => {
 
                 // Action
                 await commentLikeRepositoryPostgres.addLike('comment-123', 'user-123');
-                const isLiked = await commentLikeRepositoryPostgres.checkLikeStatus('comment-123', 'user-123');
 
                 // Assert
+                const isLiked = await commentLikeRepositoryPostgres.checkLikeStatus('comment-123', 'user-123');
                 expect(isLiked).toBe(true);
             });
         });
@@ -119,8 +119,8 @@ describe('CommentLikeRepositoryPostgres', () => {
 
                 // Action
                 const fakeIdGenerator = () => '123';
-                const commentLikeRepository = new CommentLikeRepositoryPostgres(mockPool, fakeIdGenerator);
-                const likeCounts = await commentLikeRepository.getLikeCountByThreadId(threadId);
+                const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(mockPool, fakeIdGenerator);
+                const likeCounts = await commentLikeRepositoryPostgres.getLikeCountByThreadId(threadId);
 
                 // Assert
                 expect(mockPool.query).toHaveBeenCalledTimes(1);
