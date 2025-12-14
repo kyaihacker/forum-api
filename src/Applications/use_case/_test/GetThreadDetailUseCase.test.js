@@ -86,5 +86,6 @@ describe('GetThreadDetailUseCase', () => {
         expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload.id);
         expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(useCasePayload.id);
         expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(useCasePayload.id);
+        expect(mockCommentLikeRepository.getLikeCountByThreadId).toBeCalledWith(useCasePayload.id);
     });
 });

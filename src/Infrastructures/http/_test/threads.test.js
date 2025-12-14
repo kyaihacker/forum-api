@@ -17,6 +17,7 @@ describe('/threads endpoint', () => {
     });
 
     afterEach(async () => {
+        await LikesTableTestHelper.cleanTable();
         await RepliesTableTestHelper.cleanTable();
         await CommentsTableTestHelper.cleanTable();
         await ThreadsTableTestHelper.cleanTable();
